@@ -6,7 +6,7 @@ import string
 class BoggleGame:
     def __init__(self, root):
         self.root = root
-        self.root.title("Boggle Game - NEA Project")
+        self.root.title("Boggle Game")
         self.root.geometry("600x700")
         self.root.configure(bg='#2b2b2b')
         

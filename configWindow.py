@@ -205,10 +205,14 @@ class ConfigWindow(QWidget):
             'difficulty': self.difficulty_options[self.difficulty_index],
             'ai_helper': self.helper_options[self.helper_index]
         }
-        print("\nStarting game with configuration:")
-        for key, value in config.items():
-            print(f"  {key}: {value}")
-        # Here you would pass config to your game window
+
+        from boggleGame import BoggleGame
+
+        self.hide()
+        self.game_window = BoggleGame(config)
+        self.game_window.config_window = self
+        self.game_window.show()
+
 
     def back_to_menu(self):
         if self.main_menu:
