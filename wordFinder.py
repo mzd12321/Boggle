@@ -50,6 +50,7 @@ class WordFinder:
         # Backtrack
         visited[row][col] = False
 
+
 class TrieNode:
     """Node in the Trie structure for efficient word lookup"""
 

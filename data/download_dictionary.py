@@ -10,7 +10,7 @@ def download_dictionary():
         os.makedirs('data')
 
     url = 'https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt'
-    filepath = 'data/enable1.txt'
+    filepath = 'enable1.txt'
 
     if os.path.exists(filepath):
         print(f"Dictionary already exists at {filepath}")
