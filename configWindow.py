@@ -22,6 +22,7 @@ class ConfigWindow(QWidget):
 
         self.initUI()
 
+
     def initUI(self):
         self.setWindowTitle('Boggle - Configuration')
         self.setGeometry(300, 300, 800, 600)
@@ -138,6 +139,7 @@ class ConfigWindow(QWidget):
 
         self.setLayout(main_layout)
 
+
     def create_toggle_button(self, text):
         button = QPushButton(text)
         button.setFixedSize(150, 80)
@@ -159,17 +161,20 @@ class ConfigWindow(QWidget):
         """)
         return button
 
+
     def toggle_gridsize(self):
         """Cycle through grid size options"""
         self.gridsize_index = (self.gridsize_index + 1) % len(self.gridsize_options)
         self.gridsize_btn.setText(self.gridsize_options[self.gridsize_index])
         print(f"Grid size changed to: {self.gridsize_options[self.gridsize_index]}")
 
+
     def toggle_timer(self):
         """Cycle through timer options"""
         self.timer_index = (self.timer_index + 1) % len(self.timer_options)
         self.timer_btn.setText(self.timer_options[self.timer_index])
         print(f"Timer changed to: {self.timer_options[self.timer_index]}")
+
 
     def toggle_difficulty(self):
         """Cycle through difficulty options"""
@@ -191,11 +196,13 @@ class ConfigWindow(QWidget):
         """)
         print(f"Difficulty changed to: {self.difficulty_options[self.difficulty_index]}")
 
+
     def toggle_helper(self):
         """Toggle AI helper on/off"""
         self.helper_index = (self.helper_index + 1) % len(self.helper_options)
         self.helper_btn.setText(self.helper_options[self.helper_index])
         print(f"AI Helper: {self.helper_options[self.helper_index]}")
+
 
     def start_game(self):
         """Get current configuration and start game"""

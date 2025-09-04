@@ -65,7 +65,7 @@ class EndGameDialog(QDialog):
         # Question label
         question = QLabel("End the current game?")
         question.setAlignment(Qt.AlignCenter)
-        question.setStyleSheet("font-size: 16px; padding: 20px;")
+        question.setStyleSheet("font-size: 16px; color: #666; padding: 20px;")
 
         # Buttons
         button_layout = QHBoxLayout()
@@ -421,6 +421,7 @@ class BoggleGame(QWidget):
         self.timer.start(1000)
         self.update_timer()
 
+
     def update_timer(self):
         """Update timer display"""
         if self.time_left <= 0:
@@ -432,6 +433,7 @@ class BoggleGame(QWidget):
         seconds = self.time_left % 60
         self.timer_label.setText(f'Time: {minutes:02d}:{seconds:02d}')
         self.time_left -= 1
+
 
     def end_game(self):
         """End game and show analytics"""
@@ -453,7 +455,6 @@ class BoggleGame(QWidget):
         self.hide()
         self.analytics = AnalyticsWindow(game_data, self.config_window)
         self.analytics.show()
-
 
 
 if __name__ == '__main__':

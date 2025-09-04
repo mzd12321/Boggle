@@ -18,6 +18,7 @@ class AnalyticsWindow(QWidget):
 
         self.initUI()
 
+
     def initUI(self):
         self.setWindowTitle('Game Analytics')
         self.setGeometry(200, 100, 800, 600)
@@ -87,14 +88,19 @@ class AnalyticsWindow(QWidget):
 
         # Missed words display
         missed_label = QLabel('Missed Words:')
-        missed_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #333; margin-top: 20px;")
+        missed_label.setStyleSheet("""
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #333; 
+            margin-top: 20px;
+        """)
 
         # Scrollable area for missed words
         scroll_area = QScrollArea()
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout()
 
-        missed_text = ', '.join(sorted(self.missed_words)) if self.missed_words else "None - Perfect game!"
+        missed_text = ', '.join(sorted(self.missed_words)) if self.missed_words else "None."
         missed_display = QLabel(missed_text)
         missed_display.setWordWrap(True)
         missed_display.setStyleSheet("""
