@@ -226,43 +226,6 @@ class BoggleGame(QWidget):
         board_container.setLayout(self.board_layout)
         board_container.setMaximumSize(500, 500)
 
-        # Control buttons
-        button_layout = QHBoxLayout()
-
-        submit_btn = QPushButton('Submit Word')
-        submit_btn.setFixedHeight(50)
-        submit_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                font-size: 18px;
-                font-weight: bold;
-                border-radius: 25px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-        """)
-        submit_btn.clicked.connect(self.submit_word)
-
-        clear_btn = QPushButton('Clear')
-        clear_btn.setFixedHeight(50)
-        clear_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #FF5722;
-                color: white;
-                font-size: 18px;
-                font-weight: bold;
-                border-radius: 25px;
-            }
-            QPushButton:hover {
-                background-color: #E64A19;
-            }
-        """)
-        clear_btn.clicked.connect(self.clear_selection)
-
-        button_layout.addWidget(submit_btn)
-        button_layout.addWidget(clear_btn)
 
 
         # Found words display
@@ -280,13 +243,11 @@ class BoggleGame(QWidget):
         self.words_display.setWordWrap(True)
         self.words_display.setMaximumHeight(100)
 
-
         # Assemble layout
         main_layout.addLayout(top_bar)
         main_layout.addWidget(self.score_label)
         main_layout.addWidget(self.word_display)
         main_layout.addWidget(board_container, alignment=Qt.AlignCenter)
-        main_layout.addLayout(button_layout)
         main_layout.addWidget(self.words_label)
         main_layout.addWidget(self.words_display)
         main_layout.addStretch()
