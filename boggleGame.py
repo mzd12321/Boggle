@@ -145,7 +145,8 @@ class BoggleGame(QWidget):
 
 
     def parse_timer(self, timer_str):
-        """Convert timer string to seconds"""
+
+        #Convert timer string to seconds
         if timer_str == "Off":
             return 0
         minutes, seconds = timer_str.split(':')
@@ -278,6 +279,7 @@ class BoggleGame(QWidget):
         """)
         self.words_display.setWordWrap(True)
         self.words_display.setMaximumHeight(100)
+
 
         # Assemble layout
         main_layout.addLayout(top_bar)
