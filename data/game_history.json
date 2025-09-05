@@ -622,5 +622,87 @@
     "grid_size": 4,
     "time_played": 0,
     "timestamp": "2025-09-04T11:10:49.853116"
+  },
+  {
+    "score": 4,
+    "found_words": [
+      "WIG",
+      "TOY",
+      "LAT",
+      "GOY"
+    ],
+    "all_possible_words": [
+      "GOA",
+      "GOAL",
+      "GOAT",
+      "GOO",
+      "GOR",
+      "GORY",
+      "GOY",
+      "GROAT",
+      "GYRO",
+      "IOTA",
+      "LAT",
+      "LOG",
+      "LOGIA",
+      "LOGY",
+      "LOO",
+      "LOOT",
+      "LORY",
+      "LOT",
+      "LOTA",
+      "LOUR",
+      "LOURY",
+      "OAT",
+      "OLOGY",
+      "OOLOGY",
+      "OOT",
+      "ORGY",
+      "OTOLOGY",
+      "OUR",
+      "ROOT",
+      "RYA",
+      "RYOT",
+      "TAO",
+      "TOLA",
+      "TOLU",
+      "TOO",
+      "TOOL",
+      "TOY",
+      "TOYO",
+      "WIG",
+      "YOGI",
+      "YOU",
+      "YOUR"
+    ],
+    "board": [
+      [
+        "U",
+        "R",
+        "G",
+        "W"
+      ],
+      [
+        "L",
+        "O",
+        "Y",
+        "I"
+      ],
+      [
+        "A",
+        "O",
+        "I",
+        "A"
+      ],
+      [
+        "T",
+        "O",
+        "O",
+        "A"
+      ]
+    ],
+    "grid_size": 4,
+    "time_played": 210,
+    "timestamp": "2025-09-05T18:47:10.977273"
   }
 ]
