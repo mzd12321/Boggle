@@ -1,8 +1,8 @@
 import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication
-from homepageWindow import MainMenu
-from configWindow import ConfigWindow
+from modules.homepageWindow import MainMenu
+from modules.configWindow import ConfigWindow
 import tkinter as tk
 from tkinter import messagebox
 import random

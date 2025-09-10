@@ -213,7 +213,7 @@ class ConfigWindow(QWidget):
             'ai_helper': self.helper_options[self.helper_index]
         }
 
-        from boggleGame import BoggleGame
+        from modules.boggleGame import BoggleGame
 
         self.hide()
         self.game_window = BoggleGame(config)

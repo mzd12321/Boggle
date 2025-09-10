@@ -99,7 +99,7 @@ class MainMenu(QWidget):
 
     def play_game(self):
         """Transition to configuration window"""
-        from configWindow import ConfigWindow  # Import here to avoid circular imports
+        from modules.configWindow import ConfigWindow  # Import here to avoid circular imports
 
         self.hide()  # Hide current window
         self.config_window = ConfigWindow()  # Create config window instance

@@ -1,5 +1,5 @@
 import random
-from wordFinder import WordFinder  # Add this import at the top
+from modules.wordFinder import WordFinder  # Add this import at the top
 
 
 class BoardGenerator:

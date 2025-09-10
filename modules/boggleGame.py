@@ -1,10 +1,10 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QPushButton,
-                             QLabel, QVBoxLayout, QHBoxLayout, QMessageBox, QDialog)
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QMessageBox, QDialog
 from PyQt5.QtCore import Qt, QTimer
-from boardGen import BoardGenerator
-from validation import WordValidator
-from wordFinder import WordFinder
+from modules.boardGen import BoardGenerator
+from modules.validation import WordValidator
+from modules.wordFinder import WordFinder
+from modules.analyticsWindow import AnalyticsWindow
 
 
 class TileButton(QPushButton):
@@ -222,7 +222,7 @@ class BoggleGame(QWidget):
         # Game board
         board_container = QWidget()
         self.board_layout = QGridLayout()
-        self.board_layout.setSpacing(5)
+        self.board_layout.setSpacing(20)
         board_container.setLayout(self.board_layout)
         board_container.setMaximumSize(500, 500)
 
@@ -376,6 +376,7 @@ class BoggleGame(QWidget):
         self.current_word = ""
         self.word_display.setText("")
 
+
     def start_timer(self):
         """Start game timer"""
         self.time_left = self.timer_seconds
@@ -413,8 +414,7 @@ class BoggleGame(QWidget):
             'time_played': self.timer_seconds - (self.time_left if hasattr(self, 'time_left') else 0)
         }
 
-        # Open analytics window
-        from analyticsWindow import AnalyticsWindow
+        # Open Analytics Window
         self.hide()
         self.analytics = AnalyticsWindow(game_data, self.config_window)
         self.analytics.show()

@@ -7,14 +7,16 @@ from PyQt5.QtCore import Qt
 
 
 class AnalyticsWindow(QWidget):
-    def __init__(self, game_data, config_window=None):
+    def __init__(self, game_data, config_window=None, main_window=None):
         super().__init__()
         self.game_data = game_data
         self.config_window = config_window
+        self.main_window = main_window
 
         # Calculate missed words
-        self.missed_words = [word for word in game_data['all_possible_words']
-                             if word not in game_data['found_words']]
+        for word in game_data['all_possible_words']:
+            if word not in game_data['found_words']:
+                self.missed_words = word
 
         self.initUI()
 
@@ -175,7 +177,7 @@ class AnalyticsWindow(QWidget):
 
             # Load existing games or create new list
             try:
-                with open('data/game_history.json', 'r') as f:
+                with open('../data/game_history.json', 'r') as f:
                     games = json.load(f)
             except:
                 games = []
@@ -184,7 +186,7 @@ class AnalyticsWindow(QWidget):
             games.append(self.game_data)
 
             # Save back to file
-            with open('data/game_history.json', 'w') as f:
+            with open('../data/game_history.json', 'w') as f:
                 json.dump(games, f, indent=2)
 
             QMessageBox.information(self, "Success", "Game saved successfully!")
@@ -206,9 +208,9 @@ class AnalyticsWindow(QWidget):
 
     def return_to_menu(self):
         """Return to main menu"""
-        if self.config_window:
+        if self.main_window:
             self.hide()
-            self.config_window.show()
+            self.main_window.show()
         else:
             self.close()
 

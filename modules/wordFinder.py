@@ -1,4 +1,4 @@
-from validation import WordValidator
+from modules.validation import WordValidator
 
 
 class WordFinder:
@@ -49,46 +49,3 @@ class WordFinder:
 
         # Backtrack
         visited[row][col] = False
-
-
-class TrieNode:
-    """Node in the Trie structure for efficient word lookup"""
-
-    def __init__(self):
-        self.children = {}
-        self.is_word = False
-
-
-class Trie:
-    """Trie data structure for efficient word validation and prefix checking"""
-
-    def __init__(self):
-        self.root = TrieNode()
-
-    def insert(self, word):
-        """Insert a word into the trie"""
-        node = self.root
-        for char in word.upper():
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-        node.is_word = True
-
-    def search(self, word):
-        """Check if word exists in trie"""
-        node = self.root
-        for char in word.upper():
-            if char not in node.children:
-                return False
-            node = node.children[char]
-        return node.is_word
-
-    def starts_with(self, prefix):
-        """Check if any word starts with this prefix (for pruning)"""
-        node = self.root
-        for char in prefix.upper():
-            if char not in node.children:
-                return False
-            node = node.children[char]
-        return True
-
