@@ -7,16 +7,16 @@ from PyQt5.QtCore import Qt
 
 
 class AnalyticsWindow(QWidget):
-    def __init__(self, game_data, config_window=None, main_window=None):
+    def __init__(self, game_data, main_window=None):  # Remove config_window parameter
         super().__init__()
         self.game_data = game_data
-        self.config_window = config_window
         self.main_window = main_window
 
-        # Calculate missed words
+        # Fix missed words calculation
+        self.missed_words = []
         for word in game_data['all_possible_words']:
             if word not in game_data['found_words']:
-                self.missed_words = word
+                self.missed_words.append(word)
 
         self.initUI()
 
@@ -177,7 +177,7 @@ class AnalyticsWindow(QWidget):
 
             # Load existing games or create new list
             try:
-                with open('../data/game_history.json', 'r') as f:
+                with open('data/game_history.json', 'r') as f:
                     games = json.load(f)
             except:
                 games = []

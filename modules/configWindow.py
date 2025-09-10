@@ -216,7 +216,8 @@ class ConfigWindow(QWidget):
         from modules.boggleGame import BoggleGame
 
         self.hide()
-        self.game_window = BoggleGame(config)
+        # Pass main_menu reference to BoggleGame
+        self.game_window = BoggleGame(config, self.main_menu)  # Pass main_menu
         self.game_window.config_window = self
         self.game_window.show()
 

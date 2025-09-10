@@ -110,10 +110,11 @@ class EndGameDialog(QDialog):
 
 
 class BoggleGame(QWidget):
-    def __init__(self, config):
+    def __init__(self, config, main_window=None):  # Add main_window parameter
         super().__init__()
         self.config = config
         self.config_window = None
+        self.main_window = main_window  # Main window reference
 
         # Parse config
         self.grid_size = int(config['grid_size'][0])
@@ -398,7 +399,6 @@ class BoggleGame(QWidget):
         self.timer_label.setText(f'Time: {minutes:02d}:{seconds:02d}')
         self.time_left -= 1
 
-
     def end_game(self):
         """End game and show analytics"""
         if hasattr(self, 'timer'):
@@ -414,9 +414,9 @@ class BoggleGame(QWidget):
             'time_played': self.timer_seconds - (self.time_left if hasattr(self, 'time_left') else 0)
         }
 
-        # Open Analytics Window
+        # Open Analytics Window - pass main_window
         self.hide()
-        self.analytics = AnalyticsWindow(game_data, self.config_window)
+        self.analytics = AnalyticsWindow(game_data, self.main_window)  # Pass main_window
         self.analytics.show()
 
 
