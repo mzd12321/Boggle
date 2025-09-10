@@ -168,7 +168,6 @@ class AnalyticsWindow(QWidget):
 
         self.setLayout(main_layout)
 
-
     def save_game(self):
         """Save game data to file"""
         try:
@@ -185,8 +184,8 @@ class AnalyticsWindow(QWidget):
             # Add this game
             games.append(self.game_data)
 
-            # Save back to file
-            with open('../data/game_history.json', 'w') as f:
+            # Save back to file - FIX THIS LINE
+            with open('data/game_history.json', 'w') as f:  # Use same path as read
                 json.dump(games, f, indent=2)
 
             QMessageBox.information(self, "Success", "Game saved successfully!")
