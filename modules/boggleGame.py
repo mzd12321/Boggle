@@ -1,6 +1,6 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QMessageBox, QDialog
-from PyQt6.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QMessageBox, QDialog
+from PyQt5.QtCore import Qt, QTimer
 from modules.boardGen import BoardGenerator
 from modules.validation import WordValidator
 from modules.wordFinder import WordFinder
@@ -64,7 +64,7 @@ class EndGameDialog(QDialog):
 
         # Question label
         question = QLabel("End the current game?")
-        question.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        question.setAlignment(Qt.AlignCenter)
         question.setStyleSheet("font-size: 16px; color: #666; padding: 20px;")
 
         # Buttons
@@ -198,7 +198,7 @@ class BoggleGame(QWidget):
 
         # Score display
         self.score_label = QLabel('Score: 0')
-        self.score_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.score_label.setAlignment(Qt.AlignCenter)
         self.score_label.setStyleSheet("""
             font-size: 24px;
             font-weight: bold;
@@ -208,7 +208,7 @@ class BoggleGame(QWidget):
 
         # Current word display
         self.word_display = QLabel('')
-        self.word_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.word_display.setAlignment(Qt.AlignCenter)
         self.word_display.setStyleSheet("""
             font-size: 36px;
             font-weight: bold;
@@ -226,7 +226,6 @@ class BoggleGame(QWidget):
         self.board_layout.setSpacing(20)
         board_container.setLayout(self.board_layout)
         board_container.setMaximumSize(500, 500)
-
 
 
         # Found words display
@@ -248,7 +247,7 @@ class BoggleGame(QWidget):
         main_layout.addLayout(top_bar)
         main_layout.addWidget(self.score_label)
         main_layout.addWidget(self.word_display)
-        main_layout.addWidget(board_container, alignment=Qt.AlignmentFlag.AlignCenter)
+        main_layout.addWidget(board_container, alignment=Qt.AlignCenter)
         main_layout.addWidget(self.words_label)
         main_layout.addWidget(self.words_display)
         main_layout.addStretch()
@@ -288,7 +287,7 @@ class BoggleGame(QWidget):
             self.timer.stop()  # Pause timer
 
         dialog = EndGameDialog(self)
-        if dialog.exec() == QDialog.DialogCode.Accepted:
+        if dialog.exec_() == QDialog.Accepted:
             self.end_game()
         else:
             # Resume timer if it was running
@@ -432,4 +431,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     game = BoggleGame(test_config)  # Note: BoggleGame with capital B, not boggleGame
     game.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())

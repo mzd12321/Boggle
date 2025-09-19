@@ -1,9 +1,9 @@
 import sys
 import json
 from datetime import datetime
-from PyQt6.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout,
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout,
                              QHBoxLayout, QPushButton, QScrollArea, QMessageBox)
-from PyQt6.QtCore import Qt
+from PyQt5.QtCore import Qt
 
 
 class AnalyticsWindow(QWidget):
@@ -30,7 +30,7 @@ class AnalyticsWindow(QWidget):
 
         # Title
         title = QLabel('Post-Game Analytics')
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("""
             font-size: 32px;
             font-weight: bold;
@@ -41,14 +41,14 @@ class AnalyticsWindow(QWidget):
         # Score summary
         score_text = f"Final Score: {self.game_data['score']}"
         score_label = QLabel(score_text)
-        score_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        score_label.setAlignment(Qt.AlignCenter)
         score_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #333; padding: 10px;")
 
         # Statistics
         stats_layout = QHBoxLayout()
 
         found_stat = QLabel(f"Words Found:\n{len(self.game_data['found_words'])}")
-        found_stat.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        found_stat.setAlignment(Qt.AlignCenter)
         found_stat.setStyleSheet("""
             background-color: white;
             padding: 15px;
@@ -59,7 +59,7 @@ class AnalyticsWindow(QWidget):
         """)
 
         missed_stat = QLabel(f"Words Missed:\n{len(self.missed_words)}")
-        missed_stat.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        missed_stat.setAlignment(Qt.AlignCenter)
         missed_stat.setStyleSheet("""
             background-color: white;
             padding: 15px;
@@ -74,7 +74,7 @@ class AnalyticsWindow(QWidget):
                       if self.game_data['all_possible_words'] else 0)
 
         percent_stat = QLabel(f"Completion:\n{percentage:.1f}%")
-        percent_stat.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        percent_stat.setAlignment(Qt.AlignCenter)
         percent_stat.setStyleSheet("""
             background-color: white;
             padding: 15px;
@@ -199,9 +199,9 @@ class AnalyticsWindow(QWidget):
         """Delete game without saving"""
         reply = QMessageBox.question(self, "Confirm Delete",
                                      "Are you sure you want to delete this game without saving?",
-                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                                     QMessageBox.Yes | QMessageBox.No)
 
-        if reply == QMessageBox.StandardButton.Yes:
+        if reply == QMessageBox.Yes:
             self.return_to_menu()
 
 
@@ -229,4 +229,4 @@ if __name__ == '__main__':
     }
     analywindow = AnalyticsWindow(game_data)
     analywindow.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())
