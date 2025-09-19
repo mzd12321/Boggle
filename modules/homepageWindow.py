@@ -3,6 +3,39 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QLabel, QVBoxLa
                              QHBoxLayout)
 from PyQt5.QtCore import Qt
 
+'''
+This file serves as the application's main menu and navigation hub.
+It provides the first interface users see and handles transitions to other components.
+
+Key Attributes:
+ - self.config_window - Reference to ConfigWindow for navigation management
+
+Key Methods:
+ - __init__(self):
+        - Constructor that initializes the main menu window
+        - Calls parent QWidget constructor and triggers UI setup
+ - initUI(self):
+        - Builds the complete user interface layout and styling
+        - Window setup: Sets title "Boggle" and geometry (300,300,800,600)
+        - Styling system: Applies CSS-like styling:
+            - Light gray background (#f0f0f0)
+            - Large bold title (72px, dark gray)
+            - Styled buttons with rounded corners, padding, and hover effects
+            - Color-coded buttons: Green (Play), Orange (Analytics), Red (Quit)
+        - Layout architecture: Uses nested QVBoxLayout and QHBoxLayout
+            - Vertical layout for overall structure with stretches for spacing
+            - Horizontal layout for button arrangement
+            - Centers title and evenly spaces buttons
+        - Widget creation: Creates title label and three navigation buttons
+        - Signal connections: Links button clicks to respective methods
+ - play_game(self):
+        - Transition from Menu to Configuration
+ - show_analytics(self):
+        - Transition from Menu to History Results
+ - quit_game(self):
+        - Quits the software
+'''
+
 class MainMenu(QWidget):
     def __init__(self):
         super().__init__()
@@ -53,7 +86,7 @@ class MainMenu(QWidget):
 
         title_label = QLabel('Boggle')
         title_label.setObjectName("TitleLabel")
-        title_label.setAlignment(Qt.AlignCenter)  # Changed from Qt.AlignmentFlag.AlignCenter
+        title_label.setAlignment(Qt.AlignCenter)
 
         play_button = QPushButton('Play')
         play_button.setObjectName("PlayButton")
@@ -95,9 +128,8 @@ class MainMenu(QWidget):
         QApplication.instance().quit()
 
 
-# This is the standard entry point for a PyQt application
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_menu = MainMenu()
     main_menu.show()
-    sys.exit(app.exec())  # **Changed from app.exec_() to app.exec()**
+    sys.exit(app.exec())

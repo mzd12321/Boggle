@@ -2,7 +2,10 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt
 
+'''
 
+
+'''
 class ConfigWindow(QWidget):
     def __init__(self):
         super().__init__()

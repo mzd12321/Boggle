@@ -52,7 +52,6 @@ class TileButton(QPushButton):
 
 
 class EndGameDialog(QDialog):
-    """Dialog to confirm ending the game"""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -110,19 +109,19 @@ class EndGameDialog(QDialog):
 
 
 class BoggleGame(QWidget):
-    def __init__(self, config, main_window=None):  # Add main_window parameter
+    def __init__(self, config, main_window=None):
         super().__init__()
         self.config = config
         self.config_window = None
-        self.main_window = main_window  # Main window reference
+        self.main_window = main_window  # Refer main_window as main_window
 
-        # Parse config
+        # Parse configurations from previous window
         self.grid_size = int(config['grid_size'][0])
         self.timer_seconds = self.parse_timer(config['timer'])
         self.difficulty = config['difficulty']
         self.ai_helper_enabled = config['ai_helper'] == 'On'
 
-        # Game state
+        # Initialise game states
         self.board_letters = []
         self.tiles = []
         self.selected_path = []
@@ -133,11 +132,12 @@ class BoggleGame(QWidget):
         self.is_dragging = False
         self.ai_helper_uses = 0
 
-        # Initialize components
+        # Initialise game components
         self.board_gen = BoardGenerator(self.grid_size, self.difficulty)
         self.validator = WordValidator()
         self.word_finder = WordFinder()
 
+        # Initialise UI
         self.initUI()
         self.generate_board()
 
@@ -146,8 +146,7 @@ class BoggleGame(QWidget):
 
 
     def parse_timer(self, timer_str):
-
-        #Convert timer string to seconds
+        # Convert timer string to seconds
         if timer_str == "Off":
             return 0
         minutes, seconds = timer_str.split(':')
@@ -164,7 +163,7 @@ class BoggleGame(QWidget):
         # Top bar with timer and end game button
         top_bar = QHBoxLayout()
 
-        # Timer on the left
+        # Style sheet for Timer
         self.timer_label = QLabel('Time: --:--')
         self.timer_label.setStyleSheet("""
             font-size: 28px;
@@ -175,7 +174,7 @@ class BoggleGame(QWidget):
             border-radius: 10px;
         """)
 
-        # End Game button on the right
+        # Style sheet for End Game Button
         end_game_btn = QPushButton('End Game')
         end_game_btn.setFixedSize(120, 40)
         end_game_btn.setStyleSheet("""
@@ -196,7 +195,7 @@ class BoggleGame(QWidget):
         top_bar.addStretch()
         top_bar.addWidget(end_game_btn)
 
-        # Score display
+        # Style sheet for Score display
         self.score_label = QLabel('Score: 0')
         self.score_label.setAlignment(Qt.AlignCenter)
         self.score_label.setStyleSheet("""
@@ -206,7 +205,7 @@ class BoggleGame(QWidget):
             padding: 10px;
         """)
 
-        # Current word display
+        # Style sheet for Current word display
         self.word_display = QLabel('')
         self.word_display.setAlignment(Qt.AlignCenter)
         self.word_display.setStyleSheet("""
@@ -243,7 +242,7 @@ class BoggleGame(QWidget):
         self.words_display.setWordWrap(True)
         self.words_display.setMaximumHeight(100)
 
-        # Assemble layout
+        # Assemble all layout
         main_layout.addLayout(top_bar)
         main_layout.addWidget(self.score_label)
         main_layout.addWidget(self.word_display)
@@ -284,8 +283,10 @@ class BoggleGame(QWidget):
     def confirm_end_game(self):
         """Show confirmation dialog for ending game"""
         if hasattr(self, 'timer'):
-            self.timer.stop()  # Pause timer
+            # Pause timer if Timer is turned on
+            self.timer.stop()
 
+        # Display dialog
         dialog = EndGameDialog(self)
         if dialog.exec_() == QDialog.Accepted:
             self.end_game()

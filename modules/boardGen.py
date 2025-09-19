@@ -68,7 +68,7 @@ Key Methods:
 class BoardGenerator:
     """Generates Boggle boards based on Boggle Dice"""
 
-    # Classic Boggle dice configuration (16 dice for 4x4)
+    # Classic Boggle dice (16 dice for 4x4)
     CLASSIC_DICE = [
         "AAEEGN", "ELRTTY", "AOOTTW", "ABBJOO",
         "EHRTVW", "CIMOTU", "DISTTY", "EIOSST",
