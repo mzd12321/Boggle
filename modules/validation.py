@@ -63,13 +63,13 @@ Key Methods:
 
 '''
 class TrieNode:
-    """Node in the Trie structure for efficient word lookup"""
+    """Each Node in the Trie"""
     def __init__(self):
         self.children = {}
         self.is_word = False
 
 class Trie:
-    """Trie data structure for efficient word validation and prefix checking"""
+    """The Trie itself"""
     def __init__(self):
         self.root = TrieNode()
 

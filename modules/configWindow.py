@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLa
 from PyQt5.QtCore import Qt
 
 '''
+This file creates the configuration screen where the user customize Boggle game settings.
+It acts as the bridge between the main menu and the actual game, managing all game parameters.
 
 
 '''

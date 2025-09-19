@@ -68,10 +68,11 @@ class AnalyticsWindow(QWidget):
             font-weight: bold;
             color: #f44336;
         """)
-
-        percentage = (len(self.game_data['found_words']) /
-                      len(self.game_data['all_possible_words']) * 100
-                      if self.game_data['all_possible_words'] else 0)
+        if self.game_data['all_possible_words']:
+            percentage = (len(self.game_data['found_words']) /
+                        len(self.game_data['all_possible_words']) * 100)
+        else:
+            percentage = 0
 
         percent_stat = QLabel(f"Completion:\n{percentage:.1f}%")
         percent_stat.setAlignment(Qt.AlignCenter)
@@ -102,7 +103,10 @@ class AnalyticsWindow(QWidget):
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout()
 
-        missed_text = ', '.join(sorted(self.missed_words)) if self.missed_words else "None."
+        if self.missed_words:
+            missed_text = ', '.join(sorted(self.missed_words))
+        else:
+            missed_text = ''
         missed_display = QLabel(missed_text)
         missed_display.setWordWrap(True)
         missed_display.setStyleSheet("""

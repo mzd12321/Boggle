@@ -50,7 +50,7 @@ class WordFinder:
 
     def find_all_words(self, board):
         """Find all valid words in the board"""
-        words = set() #set to prevent duplication
+        words = set() # Set to prevent duplication
         rows = len(board)
         cols = len(board[0])
 
@@ -63,9 +63,11 @@ class WordFinder:
 
     def dfs(self, board, row, col, current_word, visited, found_words):
         """Depth-first search with prefix pruning"""
+        # Check if at the edge of the board to prevent searching outside the grid
         if row < 0 or row >= len(board) or col < 0 or col >= len(board[0]):
             return
 
+        # Check if the tile is visited
         if visited[row][col]:
             return
 

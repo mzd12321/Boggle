@@ -1,5 +1,5 @@
 import random
-from modules.wordFinder import WordFinder  # Add this import at the top
+from modules.wordFinder import WordFinder
 
 '''
 This file generates a Boggle board using real dice configurations. 
@@ -100,7 +100,7 @@ class BoardGenerator:
             elif self.size == 5:
                 board = self.generate_from_dice(self.BIG_DICE)
             else:
-                # Exception Handling
+                # Generate from random function (This was used for testing)
                 board = self.generate_random()
 
             # Check if board meets difficulty requirements
@@ -137,7 +137,7 @@ class BoardGenerator:
         return board
 
     def generate_random(self):
-        """Generate random board with weighted letters"""
+        """Generate board with weighted letters (This was used for testing)"""
         letter_weights = {
             'E': 12, 'T': 9, 'A': 8, 'O': 8, 'I': 7, 'N': 7,
             'S': 6, 'H': 6, 'R': 6, 'L': 4, 'D': 4, 'C': 3,
