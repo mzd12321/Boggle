@@ -49,7 +49,17 @@ Key Methods:
         - Attempts to load dictionary file
         - Fall back to basic word list if file is unavailable
  - load_dictionary(self, path)
-        - 
+        - Reads dictionary file and populates the Trie
+        - Checks if dictionary exists
+        - Strip whitespaces, converts to uppercase
+        - Only include words ≥ 3 letters (According to Boggle rules)
+        - Displays word count loaded
+ - load_basic_words(self)
+        - Fallback dictionary if 'enable1.txt' is unavailable
+ - is_valid_word(self, word):
+        - Public interface checking if word exists in dictionary
+ - is_valid_prefix(self, prefix):
+        - Public interface checking if prefix exists in dictionary 
 
 '''
 class TrieNode:
