@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
+from PyQt6.QtCore import Qt
 
 
 class ConfigWindow(QWidget):
@@ -32,7 +32,7 @@ class ConfigWindow(QWidget):
 
         # Title
         title = QLabel('Game Configuration')
-        title.setAlignment(Qt.AlignCenter)
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet("""
             font-size: 48px;
             font-weight: bold;
@@ -48,28 +48,28 @@ class ConfigWindow(QWidget):
         # Create each configuration option with label and button
         # Grid Size Label
         gridsize_label = QLabel('Grid Size')
-        gridsize_label.setAlignment(Qt.AlignCenter)
+        gridsize_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         gridsize_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.gridsize_btn = self.create_toggle_button(self.gridsize_options[0])
         self.gridsize_btn.clicked.connect(self.toggle_gridsize)
 
         # Timer Label
         timer_label = QLabel('Timer')
-        timer_label.setAlignment(Qt.AlignCenter)
+        timer_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         timer_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.timer_btn = self.create_toggle_button(self.timer_options[0])
         self.timer_btn.clicked.connect(self.toggle_timer)
 
         # Difficulty Label
         difficulty_label = QLabel('Difficulty')
-        difficulty_label.setAlignment(Qt.AlignCenter)
+        difficulty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         difficulty_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.difficulty_btn = self.create_toggle_button(self.difficulty_options[0])
         self.difficulty_btn.clicked.connect(self.toggle_difficulty)
 
         # AI Helper Label
         helper_label = QLabel('AI Helper')
-        helper_label.setAlignment(Qt.AlignCenter)
+        helper_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         helper_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.helper_btn = self.create_toggle_button(self.helper_options[0])
         self.helper_btn.clicked.connect(self.toggle_helper)
@@ -125,7 +125,7 @@ class ConfigWindow(QWidget):
 
         # Button container
         button_container = QVBoxLayout()
-        button_container.setAlignment(Qt.AlignCenter)
+        button_container.setAlignment(Qt.AlignmentFlag.AlignCenter)
         button_container.addWidget(start_btn)
         button_container.addSpacing(10)
         button_container.addWidget(back_btn)
@@ -234,4 +234,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = ConfigWindow()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

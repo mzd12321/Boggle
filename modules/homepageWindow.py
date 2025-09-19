@@ -1,10 +1,10 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QLabel, QVBoxLayout,
+from PyQt6.QtWidgets import (QApplication, QWidget, QPushButton, QLabel, QVBoxLayout,
                              QGridLayout, QMessageBox, QComboBox, QSpinBox, QFormLayout,
-                             QHBoxLayout)  # **Added QHBoxLayout - MISSING**
+                             QHBoxLayout)
 
-from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt
+from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt
 
 class MainMenu(QWidget):
     def __init__(self):
@@ -62,7 +62,7 @@ class MainMenu(QWidget):
         # Title Label
         title_label = QLabel('Boggle')
         title_label.setObjectName("TitleLabel")  # Set object name for specific styling
-        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # **Changed from Qt.AlignCenter to Qt.AlignmentFlag.AlignCenter**
 
         # Play Button
         play_button = QPushButton('Play')
@@ -129,4 +129,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_menu = MainMenu()
     main_menu.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())  # **Changed from app.exec_() to app.exec()**

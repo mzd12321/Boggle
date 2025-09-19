@@ -1,6 +1,5 @@
 import sys
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 from modules.homepageWindow import MainMenu
 from modules.configWindow import ConfigWindow
 import tkinter as tk
@@ -12,4 +11,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_menu = MainMenu()
     main_menu.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
