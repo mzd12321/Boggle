@@ -1,5 +1,57 @@
 import os
 
+'''
+This file validates the current word with a dictionary
+Uses a prefix tree (Trie) data structure
+Enables real-time word validation during gameplay
+
+TrieNode Class:
+Key Attributes:
+ - self.children - Dictionary mapping letters to child TrieNodes
+ - self.is_word - Boolean value indicating if path to this node forms a word
+ - Each node can have up to 26 children and may represent the end of a word
+
+Trie Class:
+Key Attributes:
+ - self.root - The root TrieNode
+
+Key Methods:
+ - __init__(self):
+        - Constructor that creates an empty Trie with root node
+ - insert(self, word):
+        - Adds a word to the Trie
+        - Start at a root 
+        - Process each letter in the word
+        - If letter path doesn't exist, create new TrieNode
+        - Move down the tree following/creating the path
+        - Set 'is_word' to True at final node
+        - Ensure multiple words share common prefixes
+ - search(self, word):
+        - Checks if complete word exists in dictionary
+        - Follow path letter by letter from root
+        - Return False if any letter path missing
+        - Check is_word at final node
+        - True only if complete path exists and is_word is True
+        - O(n) where n = word length 
+ - stars_with(self, prefix):
+        - Check if prefix exists in dictionary
+        - Follow prefix path letter by letter from root
+        - Return False if prefix path does not exist
+        - Return True if path exists 
+    
+WordValidator Class:
+Key Attributes:
+ - self.trie - Trie instance containing entire dictionary
+ 
+Key Methods:
+ - __init__(self, dictionary_path='data/enable1.txt'): 
+        - Constructor that builds complete dictionary Trie
+        - Attempts to load dictionary file
+        - Fall back to basic word list if file is unavailable
+ - load_dictionary(self, path)
+        - 
+
+'''
 class TrieNode:
     """Node in the Trie structure for efficient word lookup"""
     def __init__(self):
