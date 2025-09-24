@@ -1,7 +1,7 @@
 import sys
 import json
 from datetime import datetime
-from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout,
+from PyQt5.QtWidgets import (QApplication, QFrame, QWidget, QLabel, QVBoxLayout, QDialog,
                              QHBoxLayout, QPushButton, QScrollArea, QMessageBox)
 from PyQt5.QtCore import Qt
 
