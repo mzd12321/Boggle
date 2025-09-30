@@ -69,43 +69,46 @@ class EndGameDialog(QDialog):
         # Buttons
         button_layout = QHBoxLayout()
 
-        yes_btn = QPushButton("Yes, End and Exit")
-        yes_btn.setStyleSheet("""
+        no_btn = QPushButton("No, Return")
+        no_btn.setStyleSheet("""
             QPushButton {
-                background-color: #4CAF50;
+                background-color: #607D8B;
                 color: white;
                 padding: 10px;
                 font-size: 14px;
+                font-weight: bold;
                 border-radius: 5px;
             }
             QPushButton:hover {
-                background-color: #45a049;
+                background-color: #455A64;
             }
         """)
-        yes_btn.clicked.connect(self.accept)
+        no_btn.clicked.connect(self.reject)
 
-        no_btn = QPushButton("No, Return")
-        no_btn.setStyleSheet("""
+
+        yes_btn = QPushButton("Yes, End and Exit")
+        yes_btn.setStyleSheet("""
             QPushButton {
                 background-color: #f44336;
                 color: white;
                 padding: 10px;
                 font-size: 14px;
+                font-weight: bold;
                 border-radius: 5px;
             }
             QPushButton:hover {
                 background-color: #d32f2f;
             }
         """)
-        no_btn.clicked.connect(self.reject)
+        yes_btn.clicked.connect(self.accept)
 
-        button_layout.addWidget(yes_btn)
+
         button_layout.addWidget(no_btn)
+        button_layout.addWidget(yes_btn)
 
         layout.addWidget(question)
         layout.addLayout(button_layout)
         self.setLayout(layout)
-
 
 
 class BoggleGame(QWidget):
@@ -113,7 +116,7 @@ class BoggleGame(QWidget):
         super().__init__()
         self.config = config
         self.config_window = None
-        self.main_window = main_window  # Refer main_window as main_window
+        self.main_window = main_window
 
         # Parse configurations from previous window
         self.grid_size = int(config['grid_size'][0])
@@ -121,7 +124,7 @@ class BoggleGame(QWidget):
         self.difficulty = config['difficulty']
         self.ai_helper_enabled = config['ai_helper'] == 'On'
 
-        # Initialise game states
+        # Game states
         self.board_letters = []
         self.tiles = []
         self.selected_path = []
@@ -132,21 +135,22 @@ class BoggleGame(QWidget):
         self.is_dragging = False
         self.ai_helper_uses = 0
 
-        # Initialise game components
+        # Game components
         self.board_gen = BoardGenerator(self.grid_size, self.difficulty)
         self.validator = WordValidator()
         self.word_finder = WordFinder()
 
-        # Initialise UI
+        # UI
         self.initUI()
         self.generate_board()
 
+        # Timer
         if self.timer_seconds > 0:
             self.start_timer()
 
 
     def parse_timer(self, timer_str):
-        # Convert timer string to seconds
+        # Timer formatting
         if timer_str == "Off":
             return 0
         minutes, seconds = timer_str.split(':')
@@ -198,7 +202,7 @@ class BoggleGame(QWidget):
         # Style sheet for Score display
         self.score_label = QLabel('Score: 0')
         self.score_label.setAlignment(Qt.AlignCenter)
-        self.score_label.setStyleSheet("""
+        self.score_label.setStyleSheet(""" 
             font-size: 24px;
             font-weight: bold;
             color: #333;
@@ -222,7 +226,7 @@ class BoggleGame(QWidget):
         # Game board
         board_container = QWidget()
         self.board_layout = QGridLayout()
-        self.board_layout.setSpacing(20)
+        self.board_layout.setSpacing(19)
         board_container.setLayout(self.board_layout)
         board_container.setMaximumSize(500, 500)
 
@@ -303,6 +307,7 @@ class BoggleGame(QWidget):
             return
 
         if self.current_word.upper() in self.found_words:
+
             QMessageBox.warning(self, "Already Found", f"You already found '{self.current_word}'")
             self.clear_selection()
             return
@@ -320,7 +325,11 @@ class BoggleGame(QWidget):
 
         self.clear_selection()
 
+    def word_valid(self):
+        """Display message when word is valid"""
+        self.setEnabled(False)
 
+        self.message_label.setText()
     def start_selection(self, row, col):
         """Start selecting a word"""
         self.clear_selection()
@@ -388,7 +397,6 @@ class BoggleGame(QWidget):
 
 
     def update_timer(self):
-        """Update timer display"""
         if self.time_left <= 0:
             self.timer.stop()
             self.end_game()
@@ -400,11 +408,10 @@ class BoggleGame(QWidget):
         self.time_left -= 1
 
     def end_game(self):
-        """End game and show analytics"""
         if hasattr(self, 'timer'):
             self.timer.stop()
 
-        # Prepare game data
+        # Format game data in json format
         game_data = {
             'score': self.score,
             'found_words': self.found_words,
@@ -414,14 +421,14 @@ class BoggleGame(QWidget):
             'time_played': self.timer_seconds - (self.time_left if hasattr(self, 'time_left') else 0)
         }
 
-        # Open Analytics Window - pass main_window
+        # Open Analytics window
         self.hide()
-        self.analytics = AnalyticsWindow(game_data, self.main_window)  # Pass main_window
+        self.analytics = AnalyticsWindow(game_data, self.main_window)
         self.analytics.show()
 
 
 if __name__ == '__main__':
-    # Create a test configuration
+    # Test configuration
     test_config = {
         'grid_size': '4x4',
         'timer': '3:00',
@@ -430,6 +437,6 @@ if __name__ == '__main__':
     }
 
     app = QApplication(sys.argv)
-    game = BoggleGame(test_config)  # Note: BoggleGame with capital B, not boggleGame
+    game = BoggleGame(test_config)
     game.show()
     sys.exit(app.exec_())

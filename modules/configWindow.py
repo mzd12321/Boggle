@@ -33,7 +33,7 @@ class ConfigWindow(QWidget):
         main_layout = QVBoxLayout()
 
         title = QLabel('Game Configuration')
-        title.setAlignment(Qt.AlignCenter)  # Changed from Qt.AlignmentFlag.AlignCenter
+        title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("""
             font-size: 48px;
             font-weight: bold;
@@ -46,25 +46,25 @@ class ConfigWindow(QWidget):
         grid_layout.setSpacing(30)
 
         gridsize_label = QLabel('Grid Size')
-        gridsize_label.setAlignment(Qt.AlignCenter)  # Changed
+        gridsize_label.setAlignment(Qt.AlignCenter)
         gridsize_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.gridsize_btn = self.create_toggle_button(self.gridsize_options[0])
         self.gridsize_btn.clicked.connect(self.toggle_gridsize)
 
         timer_label = QLabel('Timer')
-        timer_label.setAlignment(Qt.AlignCenter)  # Changed
+        timer_label.setAlignment(Qt.AlignCenter)
         timer_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.timer_btn = self.create_toggle_button(self.timer_options[0])
         self.timer_btn.clicked.connect(self.toggle_timer)
 
         difficulty_label = QLabel('Difficulty')
-        difficulty_label.setAlignment(Qt.AlignCenter)  # Changed
+        difficulty_label.setAlignment(Qt.AlignCenter)
         difficulty_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.difficulty_btn = self.create_toggle_button(self.difficulty_options[0])
         self.difficulty_btn.clicked.connect(self.toggle_difficulty)
 
         helper_label = QLabel('AI Helper')
-        helper_label.setAlignment(Qt.AlignCenter)  # Changed
+        helper_label.setAlignment(Qt.AlignCenter)
         helper_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #555;")
         self.helper_btn = self.create_toggle_button(self.helper_options[0])
         self.helper_btn.clicked.connect(self.toggle_helper)
@@ -110,7 +110,7 @@ class ConfigWindow(QWidget):
         back_btn.clicked.connect(self.back_to_menu)
 
         button_container = QVBoxLayout()
-        button_container.setAlignment(Qt.AlignCenter)  # Changed
+        button_container.setAlignment(Qt.AlignCenter)
         button_container.addWidget(start_btn)
         button_container.addSpacing(10)
         button_container.addWidget(back_btn)

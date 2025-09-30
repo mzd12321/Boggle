@@ -127,7 +127,7 @@ class BoardGenerator:
             for col in range(self.size):
                 die = shuffled_dice[dice_index]
                 letter = random.choice(die)
-                # Handle Qu as a single tile
+                # Qu is a single tile
                 if letter == 'Q':
                     letter = 'Qu'
                 board_row.append(letter)

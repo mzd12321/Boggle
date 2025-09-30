@@ -121,7 +121,7 @@ class WordValidator:
                 word_count = 0
                 for line in f:
                     word = line.strip().upper()
-                    if len(word) >= 3:  # Boggle minimum
+                    if len(word) >= 3:  # Minimum word length
                         self.trie.insert(word)
                         word_count += 1
                 print(f"Loaded {word_count} words from dictionary")

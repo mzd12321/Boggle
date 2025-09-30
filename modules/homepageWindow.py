@@ -63,18 +63,21 @@ class MainMenu(QWidget):
             }
             QPushButton#PlayButton {
                 background-color: #4CAF50;
+                font-weight: bold;
             }
             QPushButton#PlayButton:hover {
                 background-color: #45a049;
             }
             QPushButton#AnalyticsButton {
                 background-color: #ff9800;
+                font-weight: bold;
             }
             QPushButton#AnalyticsButton:hover {
                 background-color: #fb8c00;
             }
             QPushButton#QuitButton {
                 background-color: #f44336;
+                font-weight: bold;
             }
             QPushButton#QuitButton:hover {
                 background-color: #d32f2f;
