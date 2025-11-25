@@ -101,7 +101,7 @@ class AnalyticsWindow(QWidget):
         self.setStyleSheet("background-color: #f5f5f5;")
         self.message_label = QLabel("")
         self.message_label.setAlignment(Qt.AlignCenter)
-        self.message_label.hide()  # UI hidden by default
+        self.message_label.hide()
 
         main_layout = QVBoxLayout()
 
@@ -115,13 +115,11 @@ class AnalyticsWindow(QWidget):
             padding: 20px;
         """)
 
-        # Score summary
         score_text = f"Final Score: {self.game_data['score']}"
         score_label = QLabel(score_text)
         score_label.setAlignment(Qt.AlignCenter)
         score_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #333; padding: 10px;")
 
-        # Statistics
         stats_layout = QHBoxLayout()
         found_stat = QLabel(f"Words Found:\n{len(self.game_data['found_words'])}")
         found_stat.setAlignment(Qt.AlignCenter)
@@ -165,8 +163,6 @@ class AnalyticsWindow(QWidget):
         stats_layout.addWidget(missed_stat)
         stats_layout.addWidget(percent_stat)
 
-
-        # Missed words display
         missed_label = QLabel('Missed Words:')
         missed_label.setStyleSheet("""
             font-size: 18px; 
@@ -175,7 +171,6 @@ class AnalyticsWindow(QWidget):
             margin-top: 20px;
         """)
 
-        # Scrollable area for missed words
         scroll_area = QScrollArea()
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout()
@@ -343,21 +338,3 @@ class AnalyticsWindow(QWidget):
             self.main_window.show()
         else:
             self.close()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    game_data = {
-        'score': 45,
-        'found_words': ['THE', 'AND', 'CAT', 'DOG', 'RUN'],
-        'all_possible_words': ['THE', 'AND', 'CAT', 'DOG', 'RUN', 'JUMP', 'PLAY', 'WORD', 'TEST', 'GAME'],
-        'board': [['T', 'H', 'E', 'A'],
-                  ['C', 'A', 'T', 'N'],
-                  ['D', 'O', 'G', 'D'],
-                  ['R', 'U', 'N', 'S']],
-        'grid_size': 4,
-        'time_played': 180  # 3 minutes
-    }
-    analywindow = AnalyticsWindow(game_data)
-    analywindow.show()
-    sys.exit(app.exec_())

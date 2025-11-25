@@ -146,6 +146,3 @@ class WordValidator:
     def is_valid_prefix(self, prefix):
         """Check if prefix could lead to valid word (for pruning)"""
         return self.trie.starts_with(prefix)
-
-if __name__ == '__main__':
-    pass

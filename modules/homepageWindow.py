@@ -129,10 +129,3 @@ class MainMenu(QWidget):
 
     def quit_game(self):
         QApplication.instance().quit()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    main_menu = MainMenu()
-    main_menu.show()
-    sys.exit(app.exec())

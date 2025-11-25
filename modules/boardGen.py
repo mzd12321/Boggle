@@ -1,4 +1,5 @@
 import random
+from wordfreq import word_frequency
 from modules.wordFinder import WordFinder
 
 '''
@@ -38,14 +39,14 @@ Key Methods:
         - We convert 'Q' to 'Qu' 
         - We place letters into 2D array structure
 
- - geenerate_random(self):
+ - generate_random(self):
         - This is the fallback method using weighted letter frequencies
         - We use English letter frequency weights (E=12, T=9, A=8, etc.)
         - Includes 'Qu' as a single tile
         - We must have fallback logic in case Main method fails
         
  - meets_difficulty(self, word_count):
-        - Determines if a baord has appropriate number of words for chosen difficulty
+        - Determines if a board has appropriate number of words for chosen difficulty
         - We implement Difficulty Thresholds:
             4x4 Boards:
             - Easy: 80+ words 
@@ -103,14 +104,13 @@ class BoardGenerator:
                 # Generate from random function (This was used for testing)
                 board = self.generate_random()
 
-            # Check if board meets difficulty requirements
             word_count = len(self.word_finder.find_all_words(board))
 
             if self.meets_difficulty(word_count):
                 print(f"Board generated with {word_count} words (Difficulty: {self.difficulty})")
                 return board
 
-        # If no suitable board found, return last attempt
+        # Return the last attempt if no suitable board is found
         print(f"Warning: Could not generate board meeting {self.difficulty} difficulty")
         return board
 
@@ -127,13 +127,11 @@ class BoardGenerator:
             for col in range(self.size):
                 die = shuffled_dice[dice_index]
                 letter = random.choice(die)
-                # Qu is a single tile
                 if letter == 'Q':
                     letter = 'Qu'
                 board_row.append(letter)
                 dice_index += 1
             board.append(board_row)
-
         return board
 
     def generate_random(self):
@@ -145,11 +143,9 @@ class BoardGenerator:
             'P': 2, 'B': 1, 'V': 1, 'K': 1, 'J': 1, 'X': 1,
             'Qu': 1, 'Z': 1
         }
-
         letter_pool = []
         for letter, weight in letter_weights.items():
             letter_pool.extend([letter] * weight)
-
         board = []
         for row in range(self.size):
             board_row = []
@@ -157,7 +153,6 @@ class BoardGenerator:
                 letter = random.choice(letter_pool)
                 board_row.append(letter)
             board.append(board_row)
-
         return board
 
     def meets_difficulty(self, word_count):

@@ -470,18 +470,3 @@ class BoggleGame(QWidget):
         self.hide()
         self.analytics = AnalyticsWindow(game_data, self.main_window)
         self.analytics.show()
-
-
-if __name__ == '__main__':
-    # Test configuration
-    test_config = {
-        'grid_size': '4x4',
-        'timer': '3:00',
-        'difficulty': 'Easy',
-        'ai_helper': 'Off'
-    }
-
-    app = QApplication(sys.argv)
-    game = BoggleGame(test_config)
-    game.show()
-    sys.exit(app.exec_())

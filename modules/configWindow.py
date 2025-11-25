@@ -29,9 +29,7 @@ class ConfigWindow(QWidget):
         self.setWindowTitle('Boggle - Configuration')
         self.setGeometry(300, 300, 800, 600)
         self.setStyleSheet("background-color: #f0f0f0;")
-
         main_layout = QVBoxLayout()
-
         title = QLabel('Game Configuration')
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("""
@@ -41,7 +39,6 @@ class ConfigWindow(QWidget):
             padding: 20px;
             margin-bottom: 30px;
         """)
-
         grid_layout = QGridLayout()
         grid_layout.setSpacing(30)
 
@@ -164,9 +161,7 @@ class ConfigWindow(QWidget):
             'difficulty': self.difficulty_options[self.difficulty_index],
             'ai_helper': self.helper_options[self.helper_index]
         }
-
         from modules.boggleGame import BoggleGame
-
         self.hide()
         self.game_window = BoggleGame(config, self.main_menu)
         self.game_window.config_window = self
@@ -178,10 +173,3 @@ class ConfigWindow(QWidget):
             self.main_menu.show()
         else:
             self.close()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = ConfigWindow()
-    window.show()
-    sys.exit(app.exec())
