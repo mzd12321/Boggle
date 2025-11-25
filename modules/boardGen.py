@@ -161,7 +161,7 @@ class BoardGenerator:
         return board
 
     def meets_difficulty(self, word_count):
-        """Check if word count meets difficulty requirements"""
+        """Check if word count meets difficulty threshold"""
         if self.size == 4:
             if self.difficulty == 'Easy':
                 return word_count >= 80

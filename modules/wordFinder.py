@@ -41,6 +41,24 @@ Key Methods:
             - Time complexity - O(n)
             - Space complexity - O(n) 
         
+FUNCTION dfs(board, row, col, current_word, visited, found_words):
+    IF row < 0 OR row >= board_height OR col < 0 OR col >= board_width:
+        RETURN
+    
+    IF visited[row][col] == TRUE:
+        RETURN
+        
+    current_word = current_word + board[row][col]
+    
+    IF NOT is_valid_prefix(current_word):
+        RETURN
+        
+    visited[row][col] = TRUE
+    
+    IF length(current_word) >= 3 AND is_valid_word(current_word):
+        found_words.add(current_word)
+        
+    FOR i in direction [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), 
 '''
 class WordFinder:
     """Finds all valid words in a Boggle board using DFS with pruning"""
@@ -50,7 +68,7 @@ class WordFinder:
 
     def find_all_words(self, board):
         """Find all valid words in the board"""
-        words = set() # Set to prevent duplication
+        words = set() # Prevent word duplication
         rows = len(board)
         cols = len(board[0])
 

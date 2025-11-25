@@ -231,10 +231,9 @@ class BoggleGame(QWidget):
         board_container.setMaximumSize(500, 500)
 
 
-        # Found words display
+        # Found words
         self.words_label = QLabel('Found Words:')
         self.words_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #333;")
-
         self.words_display = QLabel('')
         self.words_display.setStyleSheet("""
             background-color: white;
@@ -307,12 +306,41 @@ class BoggleGame(QWidget):
             return
 
         if self.current_word.upper() in self.found_words:
+            # Turn tiles orange temporarily
+            for row, col in self.selected_path:
+                tile = self.tiles[row][col]
+                tile.setStyleSheet("""
+                    QPushButton {
+                        background-color: orange;
+                        color: white;
+                        font-size: 36px;
+                        font-weight: bold;
+                        border: 3px solid darkorange;
+                        border-radius: 10px;
+                    }
+                """)
+            
+            # Update word display with a warning
+            self.word_display.setText("<b>Word Already Found!</b>")
+            self.word_display.setStyleSheet("""
+                font-size: 36px;
+                font-weight: bold;
+                color: red;
+                padding: 15px;
+                background-color: white;
+                border: 3px solid red;
+                border-radius: 10px;
+                min-height: 60px;
+            """)
 
-            QMessageBox.warning(self, "Already Found", f"You already found '{self.current_word}'")
+            # Reset tiles back to original after a short delay
+            QTimer.singleShot(1000, self.reset_tile_colors)
+            
             self.clear_selection()
             return
 
         if self.validator.is_valid_word(self.current_word):
+            # Update score
             self.found_words.append(self.current_word.upper())
             points = max(1, len(self.current_word) - 2)
             self.score += points
@@ -384,7 +412,24 @@ class BoggleGame(QWidget):
             self.tiles[row][col].set_selected(False)
         self.selected_path = []
         self.current_word = ""
+        # Reset word display style
         self.word_display.setText("")
+        self.word_display.setStyleSheet("""
+            font-size: 36px;
+            font-weight: bold;
+            color: #4CAF50;
+            padding: 15px;
+            background-color: white;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            min-height: 60px;
+        """)
+
+    def reset_tile_colors(self):
+        """Reset tile colors after temporary highlighting"""
+        for row, col in self.selected_path:
+            tile = self.tiles[row][col]
+            tile.update_style()
 
 
     def start_timer(self):
