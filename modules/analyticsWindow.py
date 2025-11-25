@@ -1,8 +1,7 @@
 import sys
 import json
 from datetime import datetime
-from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout, QDialog,
-                             QHBoxLayout, QPushButton, QScrollArea, QMessageBox)
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout, QDialog, QHBoxLayout, QPushButton, QScrollArea, QMessageBox)
 from PyQt5.QtCore import Qt, QTimer
 
 
@@ -12,11 +11,8 @@ class DeleteGameDialog(QDialog):
         self.setWindowTitle("Confirm Delete")
         self.setModal(True)
         self.setFixedSize(450, 180)
-
         layout = QVBoxLayout()
         layout.setSpacing(20)
-
-        # Question label
         question = QLabel("Are you sure you want to delete this game?\nThis action cannot be undone.")
         question.setAlignment(Qt.AlignCenter)
         question.setStyleSheet("""
@@ -26,11 +22,6 @@ class DeleteGameDialog(QDialog):
             line-height: 1.5;
         """)
 
-        # Buttons layout
-        button_layout = QHBoxLayout()
-        button_layout.setSpacing(15)
-
-        # Cancel button
         cancel_btn = QPushButton("Cancel")
         cancel_btn.setFixedSize(150, 40)
         cancel_btn.setStyleSheet("""
@@ -47,9 +38,8 @@ class DeleteGameDialog(QDialog):
             }
         """)
         cancel_btn.clicked.connect(self.reject)
-        cancel_btn.setDefault(True)  # Make cancel the default button
+        cancel_btn.setDefault(True)
 
-        # Delete button
         delete_btn = QPushButton("Delete Game")
         delete_btn.setFixedSize(150, 40)
         delete_btn.setStyleSheet("""
@@ -67,33 +57,30 @@ class DeleteGameDialog(QDialog):
         """)
         delete_btn.clicked.connect(self.accept)
 
-        # Center the buttons
+        button_layout = QHBoxLayout()
+        button_layout.setSpacing(15)
         button_layout.addStretch()
         button_layout.addWidget(cancel_btn)
         button_layout.addWidget(delete_btn)
         button_layout.addStretch()
-
         layout.addWidget(question)
         layout.addLayout(button_layout)
         layout.setContentsMargins(30, 20, 30, 20)
-
         self.setLayout(layout)
 
 
 class AnalyticsWindow(QWidget):
-    def __init__(self, game_data, main_window=None):  # Return to Main Menu
+    def __init__(self, game_data, main_window=None):
         super().__init__()
         self.game_data = game_data
         self.main_window = main_window
 
-        # Missed words calculation
         self.missed_words = []
         for word in game_data['all_possible_words']:
             if word not in game_data['found_words']:
                 self.missed_words.append(word)
 
         self.initUI()
-
 
     def initUI(self):
         self.setWindowTitle('Game Analytics')
@@ -102,10 +89,8 @@ class AnalyticsWindow(QWidget):
         self.message_label = QLabel("")
         self.message_label.setAlignment(Qt.AlignCenter)
         self.message_label.hide()
-
         main_layout = QVBoxLayout()
 
-        # Title
         title = QLabel('Post-Game Analytics')
         title.setAlignment(Qt.AlignCenter)
         title.setStyleSheet("""
@@ -171,10 +156,6 @@ class AnalyticsWindow(QWidget):
             margin-top: 20px;
         """)
 
-        scroll_area = QScrollArea()
-        scroll_content = QWidget()
-        scroll_layout = QVBoxLayout()
-
         if self.missed_words:
             missed_text = ', '.join(sorted(self.missed_words))
         else:
@@ -186,17 +167,19 @@ class AnalyticsWindow(QWidget):
             padding: 15px;
             border-radius: 10px;
             font-size: 14px;
+            color: #333;
         """)
 
+        scroll_area = QScrollArea()
+        scroll_content = QWidget()
+        scroll_layout = QVBoxLayout()
         scroll_layout.addWidget(missed_display)
         scroll_content.setLayout(scroll_layout)
         scroll_area.setWidget(scroll_content)
         scroll_area.setWidgetResizable(True)
         scroll_area.setMaximumHeight(200)
 
-        # Buttons
         button_layout = QHBoxLayout()
-
         save_btn = QPushButton('Save This Game')
         save_btn.setFixedSize(200, 50)
         save_btn.setStyleSheet("""
@@ -231,8 +214,6 @@ class AnalyticsWindow(QWidget):
 
         button_layout.addWidget(save_btn)
         button_layout.addWidget(delete_btn)
-
-        # Assemble layout
         main_layout.addWidget(title)
         main_layout.addWidget(self.message_label)
         main_layout.addWidget(score_label)
@@ -242,11 +223,9 @@ class AnalyticsWindow(QWidget):
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
         main_layout.setContentsMargins(30, 30, 30, 30)
-
         self.setLayout(main_layout)
 
     def show_success_message(self, text):
-        """Show green success message"""
         self.setEnabled(False)
         self.message_label.setText(text)
         self.message_label.setStyleSheet("""
@@ -265,7 +244,6 @@ class AnalyticsWindow(QWidget):
         QTimer.singleShot(1000, lambda: (self.message_label.hide(), self.setEnabled(True)))
 
     def show_error_message(self, text):
-        """Show red error message"""
         self.setEnabled(False)
         self.message_label.setText(text)
         self.message_label.setStyleSheet("""
@@ -288,7 +266,6 @@ class AnalyticsWindow(QWidget):
         self.setEnabled(True)
 
     def save_game(self):
-        """Save game data to gamehistory.json"""
         try:
             self.game_data['timestamp'] = datetime.now().isoformat()
             try:
@@ -307,16 +284,13 @@ class AnalyticsWindow(QWidget):
         except Exception as e:
             self.show_error_message(f"Failed to save game: {str(e)}")
 
-
     def delete_game(self):
-        """Delete game"""
         dialog = DeleteGameDialog(self)
         if dialog.exec_() == QDialog.Accepted:
             self.show_success_message("Game deleted!")
             QTimer.singleShot(1000, self.return_to_menu)
 
     def return_to_menu(self):
-        """Return to main menu"""
         if self.main_window:
             self.hide()
             self.main_window.show()

@@ -1,5 +1,4 @@
 import random
-from wordfreq import word_frequency
 from modules.wordFinder import WordFinder
 
 '''
@@ -92,7 +91,6 @@ class BoardGenerator:
         self.word_finder = WordFinder()
 
     def generate(self):
-        """Generate a board that meets difficulty requirements"""
         max_attempts = 50
 
         for attempt in range(max_attempts):
@@ -100,17 +98,15 @@ class BoardGenerator:
                 board = self.generate_from_dice(self.CLASSIC_DICE)
             elif self.size == 5:
                 board = self.generate_from_dice(self.BIG_DICE)
-            else:
-                # Generate from random function (This was used for testing)
+
+            else: # Generate from random function (This was used for testing)
                 board = self.generate_random()
 
             word_count = len(self.word_finder.find_all_words(board))
-
             if self.meets_difficulty(word_count):
                 print(f"Board generated with {word_count} words (Difficulty: {self.difficulty})")
                 return board
 
-        # Return the last attempt if no suitable board is found
         print(f"Warning: Could not generate board meeting {self.difficulty} difficulty")
         return board
 
@@ -118,10 +114,8 @@ class BoardGenerator:
         """Generate board using Boggle dice"""
         shuffled_dice = dice.copy()
         random.shuffle(shuffled_dice)
-
         board = []
         dice_index = 0
-
         for row in range(self.size):
             board_row = []
             for col in range(self.size):
