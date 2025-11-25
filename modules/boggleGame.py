@@ -69,7 +69,8 @@ class EndGameDialog(QDialog):
                 padding: 10px;
                 font-size: 14px;
                 font-weight: bold;
-                border-radius: 5px;
+                border-radius: 10px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #455A64;
@@ -85,7 +86,8 @@ class EndGameDialog(QDialog):
                 padding: 10px;
                 font-size: 14px;
                 font-weight: bold;
-                border-radius: 5px;
+                border-radius: 10px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #d32f2f;
@@ -162,7 +164,8 @@ class BoggleGame(QWidget):
                 color: white;
                 font-size: 14px;
                 font-weight: bold;
-                border-radius: 5px;
+                border-radius: 10px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #d32f2f;
@@ -210,6 +213,7 @@ class BoggleGame(QWidget):
             border-radius: 10px;
             padding: 10px;
             font-size: 14px;
+            color: #333;
         """)
         self.words_display.setWordWrap(True)
         self.words_display.setMaximumHeight(100)
@@ -222,7 +226,6 @@ class BoggleGame(QWidget):
         main_layout.addStretch()
         self.setLayout(main_layout)
         self.setMouseTracking(True)
-
 
     def generate_board(self):
         self.board_letters = self.board_gen.generate()
@@ -286,12 +289,14 @@ class BoggleGame(QWidget):
             QTimer.singleShot(1000, self.reset_tile_colors)
             self.clear_selection()
             return
+        
         if self.validator.is_valid_word(self.current_word):
             self.found_words.append(self.current_word.upper())
             points = max(1, len(self.current_word) - 2)
             self.score += points
             self.score_label.setText(f'Score: {self.score}')
             self.words_display.setText(', '.join(self.found_words))
+
         else:
             QMessageBox.warning(self, "Invalid Word", f"'{self.current_word}' is not valid")
         self.clear_selection()
@@ -376,7 +381,6 @@ class BoggleGame(QWidget):
     def end_game(self):
         if hasattr(self, 'timer'):
             self.timer.stop()
-
         game_data = {
             'score': self.score,
             'found_words': self.found_words,
@@ -385,7 +389,6 @@ class BoggleGame(QWidget):
             'grid_size': self.grid_size,
             'time_played': self.timer_seconds - (self.time_left if hasattr(self, 'time_left') else 0)
         }
-
         self.hide()
         self.analytics = AnalyticsWindow(game_data, self.main_window)
         self.analytics.show()

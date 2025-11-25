@@ -60,8 +60,8 @@ Key Methods:
         - Public interface checking if word exists in dictionary
  - is_valid_prefix(self, prefix):
         - Public interface checking if prefix exists in dictionary 
-
 '''
+
 class TrieNode:
     """Each Node in the Trie"""
     def __init__(self):

@@ -189,6 +189,7 @@ class AnalyticsWindow(QWidget):
                 font-size: 16px;
                 font-weight: bold;
                 border-radius: 25px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #45a049;
@@ -205,6 +206,7 @@ class AnalyticsWindow(QWidget):
                 font-size: 16px;
                 font-weight: bold;
                 border-radius: 25px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #d32f2f;
@@ -281,8 +283,8 @@ class AnalyticsWindow(QWidget):
             self.show_success_message("Game saved successfully!")
             QTimer.singleShot(1000, self.return_to_menu)
 
-        except Exception as e:
-            self.show_error_message(f"Failed to save game: {str(e)}")
+        except Exception:
+            self.show_error_message(f"Failed to save game: {str(Exception)}")
 
     def delete_game(self):
         dialog = DeleteGameDialog(self)

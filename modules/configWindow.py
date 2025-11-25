@@ -84,6 +84,7 @@ class ConfigWindow(QWidget):
                 font-size: 20px;
                 font-weight: bold;
                 border-radius: 25px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #45a049;
@@ -99,6 +100,7 @@ class ConfigWindow(QWidget):
                 color: white;
                 font-size: 16px;
                 border-radius: 20px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #455A64;
@@ -130,7 +132,7 @@ class ConfigWindow(QWidget):
                 font-size: 24px;
                 font-weight: bold;
                 border-radius: 15px;
-                border: 3px solid #1976D2;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #1976D2;
