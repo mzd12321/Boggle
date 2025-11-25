@@ -247,9 +247,7 @@ class AnalyticsWindow(QWidget):
 
     def show_success_message(self, text):
         """Show green success message"""
-        # Disable all interactive widgets
         self.setEnabled(False)
-
         self.message_label.setText(text)
         self.message_label.setStyleSheet("""
             QLabel {
@@ -264,15 +262,11 @@ class AnalyticsWindow(QWidget):
             }
         """)
         self.message_label.show()
-
-        # Re-enable after message hides
-        QTimer.singleShot(1500, self.hide_message)
+        QTimer.singleShot(1000, lambda: (self.message_label.hide(), self.setEnabled(True)))
 
     def show_error_message(self, text):
         """Show red error message"""
-        # Disable all interactive widgets
         self.setEnabled(False)
-
         self.message_label.setText(text)
         self.message_label.setStyleSheet("""
             QLabel {
@@ -287,49 +281,39 @@ class AnalyticsWindow(QWidget):
             }
         """)
         self.message_label.show()
-
-        QTimer.singleShot(1500, self.hide_message)
+        QTimer.singleShot(1000, lambda: (self.message_label.hide(), self.setEnabled(True)))
 
     def hide_message(self):
-        """Hide the message label and re-enable interaction"""
         self.message_label.hide()
-        self.setEnabled(True)  # Re-enable the window
-
+        self.setEnabled(True)
 
     def save_game(self):
-        """Save game data to file"""
+        """Save game data to gamehistory.json"""
         try:
-            # Add timestamp
             self.game_data['timestamp'] = datetime.now().isoformat()
-
-            # Load existing games or create new list
             try:
                 with open('data/game_history.json', 'r') as f:
                     games = json.load(f)
             except:
                 games = []
 
-            # Add this game
             games.append(self.game_data)
-
-            # Save back to file
             with open('data/game_history.json', 'w') as f:
                 json.dump(games, f, indent=2)
 
             self.show_success_message("Game saved successfully!")
-            # Delay return to menu so user can see the message
-            QTimer.singleShot(1500, self.return_to_menu)
+            QTimer.singleShot(1000, self.return_to_menu)
 
         except Exception as e:
             self.show_error_message(f"Failed to save game: {str(e)}")
 
 
     def delete_game(self):
-        """Delete game without saving"""
+        """Delete game"""
         dialog = DeleteGameDialog(self)
         if dialog.exec_() == QDialog.Accepted:
             self.show_success_message("Game deleted!")
-            QTimer.singleShot(1500, self.return_to_menu)
+            QTimer.singleShot(1000, self.return_to_menu)
 
     def return_to_menu(self):
         """Return to main menu"""
