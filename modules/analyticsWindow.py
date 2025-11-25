@@ -31,7 +31,8 @@ class DeleteGameDialog(QDialog):
                 padding: 10px;
                 font-size: 14px;
                 font-weight: bold;
-                border-radius: 5px;
+                border-radius: 10px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #455A64;
@@ -49,7 +50,8 @@ class DeleteGameDialog(QDialog):
                 padding: 10px;
                 font-size: 14px;
                 font-weight: bold;
-                border-radius: 5px;
+                border-radius: 10px;
+                border: 2px solid #333;
             }
             QPushButton:hover {
                 background-color: #d32f2f;

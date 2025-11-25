@@ -68,11 +68,11 @@ class MainMenu(QWidget):
             QPushButton#PlayButton:hover {
                 background-color: #45a049;
             }
-            QPushButton#AnalyticsButton {
+            QPushButton#GameHistoryButton {
                 background-color: #ff9800;
                 font-weight: bold;
             }
-            QPushButton#AnalyticsButton:hover {
+            QPushButton#GameHistoryButton:hover {
                 background-color: #fb8c00;
             }
             QPushButton#QuitButton {
@@ -95,9 +95,9 @@ class MainMenu(QWidget):
         play_button.setObjectName("PlayButton")
         play_button.clicked.connect(self.play_game)
 
-        analytics_button = QPushButton('Analytics')
-        analytics_button.setObjectName("AnalyticsButton")
-        analytics_button.clicked.connect(self.show_analytics)
+        history_button = QPushButton('History')
+        history_button.setObjectName("GameHistoryButton")
+        history_button.clicked.connect(self.show_history)
 
         quit_button = QPushButton('Quit')
         quit_button.setObjectName("QuitButton")
@@ -105,7 +105,7 @@ class MainMenu(QWidget):
 
         h_layout.addStretch(1)
         h_layout.addWidget(play_button)
-        h_layout.addWidget(analytics_button)
+        h_layout.addWidget(history_button)
         h_layout.addWidget(quit_button)
         h_layout.addStretch(1)
 
@@ -124,8 +124,8 @@ class MainMenu(QWidget):
         self.config_window.main_menu = self
         self.config_window.show()
 
-    def show_analytics(self):
-        print("Displaying game analytics!")
+    def show_history(self):
+        print("Displaying game history!")
 
     def quit_game(self):
         QApplication.instance().quit()
