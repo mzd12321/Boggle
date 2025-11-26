@@ -431,10 +431,10 @@ class BoggleGame(QWidget):
             return
 
         if self.current_word.upper() in self.found_words:
+            self.setEnabled(False)
             for row in range(self.grid_size):
                 for col in range(self.grid_size):
                     self.tiles[row][col].flash_color('orange', 'darkorange')
-
             self.word_display.setText("<b>Word Already Found</b>")
             self.word_display.setStyleSheet("""
                 font-size: 36px;
@@ -446,21 +446,37 @@ class BoggleGame(QWidget):
                 border-radius: 10px;
                 min-height: 60px;
             """)
-            QTimer.singleShot(1000, self.reset_tile_colors)
-            self.clear_selection()
+            QTimer.singleShot(1000, lambda: (self.reset_all_tiles(), self.clear_selection(), self.setEnabled(True)))
             return
 
-        if self.validator.is_valid_word(self.current_word):
+        elif self.validator.is_valid_word(self.current_word):
             self.found_words.append(self.current_word.upper())
-            points = floor((len(self.current_word) - 2)*1.5)
+            points = floor((len(self.current_word) - 2) * 1.5)
             self.score += points
             self.score_label.setText(f'Score: {self.score}')
             self.words_display.setText(', '.join(self.found_words))
-        else:
+            self.setEnabled(False)
             for row in range(self.grid_size):
                 for col in range(self.grid_size):
-                    self.tiles[row][col].flash_color('#f44336', '#d32f2f')
+                    self.tiles[row][col].flash_color('green', 'darkgreen')
+            self.word_display.setText(f"<b>+{points}</b>")
+            self.word_display.setStyleSheet("""
+                            font-size: 36px;
+                            font-weight: bold;
+                            color: green;
+                            padding: 15px;
+                            background-color: white;
+                            border: 3px solid green;
+                            border-radius: 10px;
+                            min-height: 60px;
+                        """)
+            QTimer.singleShot(1000, lambda: (self.reset_all_tiles(), self.clear_selection(), self.setEnabled(True)))
 
+        else:
+            self.setEnabled(False)
+            for row in range(self.grid_size):
+                for col in range(self.grid_size):
+                    self.tiles[row][col].flash_color('red', 'darkred')
             self.word_display.setText(f"<b>{self.current_word} is not valid</b>")
             self.word_display.setStyleSheet("""
                 font-size: 36px;
@@ -468,13 +484,11 @@ class BoggleGame(QWidget):
                 color: red;
                 padding: 15px;
                 background-color: white;
-                border: 3px solid #red;
+                border: 3px solid red;
                 border-radius: 10px;
                 min-height: 60px;
             """)
-            QTimer.singleShot(1000, self.reset_tile_colors)
-
-        self.clear_selection()
+            QTimer.singleShot(1000, lambda: (self.reset_all_tiles(), self.clear_selection(), self.setEnabled(True)))
 
     def start_selection(self, row, col):
         self.clear_selection()
@@ -530,9 +544,19 @@ class BoggleGame(QWidget):
             """)
 
     def reset_tile_colors(self):
+        for row, col in self.selected_path:
+            tile = self.tiles[row][col]
+            tile.is_selected = False
+            tile.is_ai_highlighted = False
+            tile.update_style()
+
+    def reset_all_tiles(self):
         for row in range(self.grid_size):
             for col in range(self.grid_size):
-                self.tiles[row][col].update_style()
+                tile = self.tiles[row][col]
+                tile.is_selected = False
+                tile.is_ai_highlighted = False
+                tile.update_style()
 
     def start_timer(self):
         self.time_left = self.timer_seconds
