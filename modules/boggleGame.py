@@ -1,4 +1,5 @@
 import sys
+from math import floor
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, \
     QMessageBox, QDialog
 from PyQt5.QtCore import Qt, QTimer
@@ -69,6 +70,18 @@ class TileButton(QPushButton):
         self.is_ai_highlighted = highlighted
         self.update_style()
 
+    def flash_color(self, color, border_color):
+        self.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {color};
+                color: white;
+                font-size: 36px;
+                font-weight: bold;
+                border: 3px solid {border_color};
+                border-radius: 10px;
+            }}
+        """)
+
 
 class EndGameDialog(QDialog):
     def __init__(self, parent=None):
@@ -130,13 +143,11 @@ class BoggleGame(QWidget):
         self.config_window = None
         self.main_window = main_window
 
-        # Parse configurations from previous window
         self.grid_size = int(config['grid_size'][0])
         self.timer_seconds = self.parse_timer(config['timer'])
         self.difficulty = config['difficulty']
         self.ai_helper_enabled = config['ai_helper'] == 'On'
 
-        # Game states
         self.board_letters = []
         self.tiles = []
         self.selected_path = []
@@ -147,13 +158,11 @@ class BoggleGame(QWidget):
         self.is_dragging = False
         self.ai_helper_uses = 0
 
-        # AI Helper states
         self.ai_cooldown_time = 20  # 20 seconds
         self.ai_cooldown_remaining = 0
         self.ai_cooldown_timer = None
         self.ai_highlighted_path = []
 
-        # Initialize modules
         self.board_gen = BoardGenerator(self.grid_size, self.difficulty)
         self.validator = WordValidator()
         self.word_finder = WordFinder()
@@ -232,7 +241,7 @@ class BoggleGame(QWidget):
 
         board_container = QWidget()
         self.board_layout = QGridLayout()
-        self.board_layout.setSpacing(10)
+        self.board_layout.setSpacing(20)
         board_container.setLayout(self.board_layout)
         board_container.setMaximumSize(500, 500)
 
@@ -250,12 +259,11 @@ class BoggleGame(QWidget):
         self.words_display.setWordWrap(True)
         self.words_display.setMaximumHeight(100)
 
-        # AI Helper button and cooldown label
         if self.ai_helper_enabled:
             ai_helper_container = QVBoxLayout()
             ai_helper_container.setAlignment(Qt.AlignCenter)
 
-            self.ai_helper_btn = QPushButton('🤖 AI Helper')
+            self.ai_helper_btn = QPushButton('AI Helper')
             self.ai_helper_btn.setFixedSize(180, 50)
             self.ai_helper_btn.setStyleSheet("""
                 QPushButton {
@@ -317,39 +325,30 @@ class BoggleGame(QWidget):
                 letter = self.board_letters[row][col]
                 tile = TileButton(letter, row, col)
                 tile.pressed.connect(lambda r=row, c=col: self.start_selection(r, c))
-                tile.clicked.connect(self.clear_ai_highlight)  # Clear AI highlight on any click
+                tile.clicked.connect(self.clear_ai_highlight)
                 self.board_layout.addWidget(tile, row, col)
                 tile_row.append(tile)
             self.tiles.append(tile_row)
 
     def use_ai_helper(self):
-        """Triggered when AI Helper button is clicked"""
         if self.ai_cooldown_remaining > 0:
             return
 
         self.ai_helper_btn.setEnabled(False)
         self.ai_helper_btn.setText('Searching...')
-
-        # Process events to update UI
         QApplication.processEvents()
-
-        # Run search directly (it's already threaded internally)
         word, path = self.ai_helper.suggest_word(
             self.board_letters,
             set(w.upper() for w in self.found_words)
         )
-
         self.handle_ai_suggestion(word, path)
 
     def handle_ai_suggestion(self, word, path):
-        """Handle the AI Helper suggestion result"""
         if word is None:
             QMessageBox.information(self, "No Suggestions", "No valid suggestions found on the board.")
-            self.ai_helper_btn.setText('🤖 AI Helper')
+            self.ai_helper_btn.setText('AI Helper')
             self.ai_helper_btn.setEnabled(True)
             return
-
-        # Display suggested word
         self.word_display.setText(f"AI suggests: {word}")
         self.word_display.setStyleSheet("""
             font-size: 32px;
@@ -361,36 +360,24 @@ class BoggleGame(QWidget):
             border-radius: 10px;
             min-height: 60px;
         """)
-
-        # Animate the path
         self.animate_ai_path(path)
-
-        # Start cooldown
         self.start_ai_cooldown()
 
     def animate_ai_path(self, path):
-        """Animate the AI suggestion path on the board"""
         self.ai_highlighted_path = path
-
         def highlight_tile(index):
             if index < len(path):
                 row, col = path[index]
                 self.tiles[row][col].set_ai_highlighted(True)
-                # Schedule next tile
                 QTimer.singleShot(300, lambda: highlight_tile(index + 1))
-
-        # Start animation
         highlight_tile(0)
 
     def clear_ai_highlight(self):
-        """Clear AI Helper highlighting when user clicks anywhere"""
         for row, col in self.ai_highlighted_path:
             if row < len(self.tiles) and col < len(self.tiles[0]):
                 self.tiles[row][col].set_ai_highlighted(False)
                 self.tiles[row][col].update_style()
         self.ai_highlighted_path = []
-
-        # Reset word display if showing AI suggestion
         if "AI suggests:" in self.word_display.text():
             self.word_display.setText("")
             self.word_display.setStyleSheet("""
@@ -405,18 +392,15 @@ class BoggleGame(QWidget):
             """)
 
     def start_ai_cooldown(self):
-        """Start the 20-second cooldown timer"""
         self.ai_cooldown_remaining = self.ai_cooldown_time
-        self.ai_helper_btn.setText('🤖 AI Helper')
+        self.ai_helper_btn.setText('AI Helper')
         self.ai_helper_btn.setEnabled(False)
-
         self.ai_cooldown_timer = QTimer()
         self.ai_cooldown_timer.timeout.connect(self.update_ai_cooldown)
-        self.ai_cooldown_timer.start(1000)  # Update every second
+        self.ai_cooldown_timer.start(1000)
         self.update_ai_cooldown()
 
     def update_ai_cooldown(self):
-        """Update the AI Helper cooldown display"""
         if self.ai_cooldown_remaining > 0:
             self.ai_cooldown_label.setText(f"Cooldown: {self.ai_cooldown_remaining}s")
             self.ai_cooldown_remaining -= 1
@@ -447,27 +431,18 @@ class BoggleGame(QWidget):
             return
 
         if self.current_word.upper() in self.found_words:
-            # Turn tiles orange temporarily
-            for row, col in self.selected_path:
-                tile = self.tiles[row][col]
-                tile.setStyleSheet("""
-                    QPushButton {
-                        background-color: orange;
-                        color: white;
-                        font-size: 36px;
-                        font-weight: bold;
-                        border: 3px solid darkorange;
-                        border-radius: 10px;
-                    }
-                """)
-            self.word_display.setText("<b>Word Already Found!</b>")
+            for row in range(self.grid_size):
+                for col in range(self.grid_size):
+                    self.tiles[row][col].flash_color('orange', 'darkorange')
+
+            self.word_display.setText("<b>Word Already Found</b>")
             self.word_display.setStyleSheet("""
                 font-size: 36px;
                 font-weight: bold;
-                color: red;
+                color: orange;
                 padding: 15px;
                 background-color: white;
-                border: 3px solid red;
+                border: 3px solid orange;
                 border-radius: 10px;
                 min-height: 60px;
             """)
@@ -477,18 +452,33 @@ class BoggleGame(QWidget):
 
         if self.validator.is_valid_word(self.current_word):
             self.found_words.append(self.current_word.upper())
-            points = max(1, len(self.current_word) - 2)
+            points = floor((len(self.current_word) - 2)*1.5)
             self.score += points
             self.score_label.setText(f'Score: {self.score}')
             self.words_display.setText(', '.join(self.found_words))
-
         else:
-            QMessageBox.warning(self, "Invalid Word", f"'{self.current_word}' is not valid")
+            for row in range(self.grid_size):
+                for col in range(self.grid_size):
+                    self.tiles[row][col].flash_color('#f44336', '#d32f2f')
+
+            self.word_display.setText(f"<b>{self.current_word} is not valid</b>")
+            self.word_display.setStyleSheet("""
+                font-size: 36px;
+                font-weight: bold;
+                color: red;
+                padding: 15px;
+                background-color: white;
+                border: 3px solid #red;
+                border-radius: 10px;
+                min-height: 60px;
+            """)
+            QTimer.singleShot(1000, self.reset_tile_colors)
+
         self.clear_selection()
 
     def start_selection(self, row, col):
         self.clear_selection()
-        self.clear_ai_highlight()  # Clear AI highlight when starting new selection
+        self.clear_ai_highlight()
         self.is_dragging = True
         self.add_to_selection(row, col)
 
@@ -540,9 +530,9 @@ class BoggleGame(QWidget):
             """)
 
     def reset_tile_colors(self):
-        for row, col in self.selected_path:
-            tile = self.tiles[row][col]
-            tile.update_style()
+        for row in range(self.grid_size):
+            for col in range(self.grid_size):
+                self.tiles[row][col].update_style()
 
     def start_timer(self):
         self.time_left = self.timer_seconds
@@ -573,7 +563,9 @@ class BoggleGame(QWidget):
             'board': self.board_letters,
             'grid_size': self.grid_size,
             'time_played': self.timer_seconds - (self.time_left if hasattr(self, 'time_left') else 0),
-            'ai_helper_uses': self.ai_helper_uses
+            'ai_helper_uses': self.ai_helper_uses,
+            'difficulty': self.difficulty,
+            'timer': self.timer_seconds
         }
         self.hide()
         self.analytics = AnalyticsWindow(game_data, self.main_window)

@@ -125,7 +125,10 @@ class MainMenu(QWidget):
         self.config_window.show()
 
     def show_history(self):
-        print("Displaying game history!")
+        from modules.gameHistoryWindow import GameHistoryWindow
+        self.hide()
+        self.history_window = GameHistoryWindow(self)
+        self.history_window.show()
 
     def quit_game(self):
         QApplication.instance().quit()
