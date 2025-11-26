@@ -199,6 +199,7 @@ class GameDetailWindow(QWidget):
         words_layout = QVBoxLayout()
         words_layout.setSpacing(5)
         all_words = []
+
         for word in words_dict['found']:
             word_label = QLabel(word.lower())
             word_label.setStyleSheet("""
@@ -208,6 +209,7 @@ class GameDetailWindow(QWidget):
                 padding: 5px 10px;
             """)
             all_words.append(word_label)
+
         for word in words_dict['missed']:
             word_label = QLabel(word.lower())
             word_label.setStyleSheet("""
@@ -219,6 +221,7 @@ class GameDetailWindow(QWidget):
         row_layout = QHBoxLayout()
         row_layout.setSpacing(10)
         words_per_row = 8
+
         for i, word_label in enumerate(all_words):
             row_layout.addWidget(word_label)
             if (i + 1) % words_per_row == 0 and i < len(all_words) - 1:
@@ -226,9 +229,11 @@ class GameDetailWindow(QWidget):
                 words_layout.addLayout(row_layout)
                 row_layout = QHBoxLayout()
                 row_layout.setSpacing(10)
+
         if row_layout.count() > 0:
             row_layout.addStretch()
             words_layout.addLayout(row_layout)
+
         words_container.setLayout(words_layout)
         layout.addWidget(words_container)
         container.setLayout(layout)

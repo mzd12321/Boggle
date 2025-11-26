@@ -136,10 +136,7 @@ class GameBlock(QFrame):
             return "Unknown date"
 
     def mousePressEvent(self, event):
-        """Handle click on game block"""
-        # Check if click was on delete button (ignore it)
         if event.button() == Qt.LeftButton:
-            # Open detail window
             self.parent_window.open_game_detail(self.game_data, self.index)
 
     def delete_game(self):
@@ -211,7 +208,6 @@ class GameHistoryWindow(QWidget):
             }
         """)
 
-        # Container for game blocks
         scroll_content = QWidget()
         self.games_layout = QVBoxLayout()
         self.games_layout.setSpacing(15)

@@ -63,13 +63,11 @@ Key Methods:
 '''
 
 class TrieNode:
-    """Each Node in the Trie"""
     def __init__(self):
         self.children = {}
         self.is_word = False
 
 class Trie:
-    """The Trie itself"""
     def __init__(self):
         self.root = TrieNode()
 
