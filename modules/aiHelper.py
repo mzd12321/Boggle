@@ -23,8 +23,6 @@ Algorithm Overview:
 
 
 class BeamSearchNode:
-    """Represents a single path in the beam search"""
-
     def __init__(self, row, col, word, path, visited):
         """
         Initialize a beam search node
@@ -52,36 +50,24 @@ class BeamSearchNode:
             float: Frequency score
         """
         if len(self.word) < 2:
-            # For very short prefixes, use basic letter frequency
             letter_freq = {
                 'E': 8, 'T': 7.5, 'A': 7.5, 'O': 7, 'I': 7, 'N': 7,
                 'S': 6.5, 'H': 6.5, 'R': 6, 'D': 5.5, 'L': 5.5, 'U': 5
             }
             return letter_freq.get(self.word[-1], 3.0)
-
-        # Use wordfreq to get frequency score
         freq = word_frequency(self.word.lower(), 'en', wordlist='best')
-
-        # Convert to Zipf scale (multiply by 10^8 then log)
         if freq > 0:
             import math
             zipf_score = math.log10(freq * 1e8)
             return max(0, zipf_score)  # Ensure non-negative
-
         return 0.0
 
 
 class AIHelper:
-    """
-    AI Helper for Boggle game using greedy beam search
-    Suggests common words to help players
-    """
-
     def __init__(self):
-        """Initialize AI Helper with word validator"""
         self.validator = WordValidator()
-        self.beam_width = 2  # Reduced for faster execution
-        self.max_word_length = 5  # Strict depth limit
+        self.beam_width = 2
+        self.max_word_length = 5
 
     def suggest_word(self, board, found_words, initial_threshold=4.0):
         """
@@ -97,16 +83,11 @@ class AIHelper:
                    Returns (None, None) if no suggestion found
         """
         threshold = initial_threshold
-
-        # Try finding words with decreasing threshold
         while threshold >= 0:
             result = self._search_with_threshold(board, found_words, threshold)
             if result[0] is not None:
                 return result
-
-            # Lower threshold by 1 and retry
             threshold -= 1.0
-
         return (None, None)
 
     def _search_with_threshold(self, board, found_words, threshold):
@@ -123,21 +104,19 @@ class AIHelper:
         """
         rows = len(board)
         cols = len(board[0])
-
-        # Shared results list (thread-safe with lock)
         results = []
         results_lock = threading.Lock()
-        found_result = threading.Event()  # Signal to stop other threads
+        found_result = threading.Event()
 
         def search_from_tile(start_row, start_col):
             """Thread worker: beam search starting from a specific tile"""
-            if found_result.is_set():  # Early exit if result found
+            if found_result.is_set():
                 return
             result = self._beam_search(board, start_row, start_col, found_words, threshold, found_result)
             if result[0] is not None:
                 with results_lock:
                     results.append(result)
-                    found_result.set()  # Signal other threads to stop
+                    found_result.set()
 
         # Create threads for each starting position
         threads = []
@@ -149,16 +128,12 @@ class AIHelper:
 
         print(f"Starting search from {len(threads)} positions")
 
-        # Wait for all threads to complete
         for thread in threads:
             thread.join()
 
-        # Return first valid result found
         if results:
-            # Sort by word frequency (highest first)
             results.sort(key=lambda x: word_frequency(x[0].lower(), 'en', wordlist='best'), reverse=True)
             return results[0]
-
         return (None, None)
 
     def _beam_search(self, board, start_row, start_col, found_words, threshold, found_result):
@@ -179,8 +154,6 @@ class AIHelper:
         rows = len(board)
         cols = len(board[0])
         print(f"Searching from ({start_row}, {start_col})")
-
-        # Initialize beam with starting node
         visited = set()
         visited.add((start_row, start_col))
         initial_node = BeamSearchNode(
@@ -190,25 +163,18 @@ class AIHelper:
             visited
         )
         beam = [initial_node]
-
-        # Directions for 8-way movement
         directions = [(-1, -1), (-1, 0), (-1, 1),
                       (0, -1), (0, 1),
                       (1, -1), (1, 0), (1, 1)]
 
-        # Beam search loop
         while beam and len(beam[0].word) <= self.max_word_length:
-            # Early exit if another thread found result
             if found_result.is_set():
                 return (None, None)
 
-            # Check if any current node forms a valid word above threshold
             for node in beam:
                 if (len(node.word) >= 3 and
                         node.word.upper() not in found_words and
                         self.validator.is_valid_word(node.word)):
-
-                    # Check frequency threshold
                     freq = word_frequency(node.word.lower(), 'en', wordlist='best')
                     import math
                     if freq > 0:
@@ -216,33 +182,23 @@ class AIHelper:
                         if zipf_score >= threshold:
                             return (node.word.upper(), node.path)
 
-            # Expand beam: generate all successor nodes
             candidates = []
             for node in beam:
                 for dr, dc in directions:
                     new_row = node.row + dr
                     new_col = node.col + dc
 
-                    # Check bounds
                     if not (0 <= new_row < rows and 0 <= new_col < cols):
                         continue
-
-                    # Check if already visited in this path
                     if (new_row, new_col) in node.visited:
                         continue
-
-                    # Create new word by appending letter
                     new_word = node.word + board[new_row][new_col]
-
-                    # Prune: check if prefix is valid
                     if not self.validator.is_valid_prefix(new_word):
                         continue
 
-                    # Create new node
                     new_visited = node.visited.copy()
                     new_visited.add((new_row, new_col))
                     new_path = node.path + [(new_row, new_col)]
-
                     new_node = BeamSearchNode(
                         new_row, new_col,
                         new_word,
@@ -251,7 +207,6 @@ class AIHelper:
                     )
                     candidates.append(new_node)
 
-            # Keep top beam_width candidates by score
             if not candidates:
                 break
 
@@ -259,22 +214,3 @@ class AIHelper:
             beam = candidates[:self.beam_width]
             print(f"Beam size: {len(beam)}, Word length: {len(beam[0].word) if beam else 0}")
         return (None, None)
-
-
-if __name__ == "__main__":
-    import time
-
-    helper = AIHelper()
-    test_board = [
-        ['T', 'E', 'S', 'T'],
-        ['A', 'R', 'E', 'A'],
-        ['L', 'I', 'N', 'E'],
-        ['W', 'O', 'R', 'D']
-    ]
-
-    start = time.time()
-    word, path = helper.suggest_word(test_board, set())
-    end = time.time()
-
-    print(f"Found: {word}")
-    print(f"Time: {end - start:.2f} seconds")
